@@ -1,0 +1,17 @@
+@import url(/src/assets/css/bootstrap.min.css);
+@import url(/src/assets/css/style.min.css);
+@import url(/src/assets/css/style.css);
+@import url(/src/assets/css/aos.css);
+
+#root {
+  margin: auto;
+  text-align: center;
+}
+
+.nav-item  {
+  cursor: pointer;
+} 
+
+a{
+ cursor: pointer;
+}
