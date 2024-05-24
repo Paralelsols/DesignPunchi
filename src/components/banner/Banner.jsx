@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 import cloud from '/src/assets/img/cloud.png'
 import heroLImg from '/src/assets/img/sol.png'
@@ -7,61 +9,61 @@ import copyIcon from '/src/assets/img/copyIcon.svg'
 import heroRImg from '/src/assets/img/heroRImg.png'
 
 const Banner = () => {
-
-    const [copyMsg, setCopyMsg] = useState('');
-
-    const copyToClipboard = (elem) => {
-        const targetId = "_hiddenCopyText_";
-        const isInput = elem.tagName === "INPUT" || elem.tagName === "TEXTAREA";
-        let origSelectionStart, origSelectionEnd;
-        let target;
-        if (isInput) {
-            target = elem;
-            origSelectionStart = elem.selectionStart;
-            origSelectionEnd = elem.selectionEnd;
-        } else {
-            target = document.getElementById(targetId);
-            if (!target) {
-                target = document.createElement("textarea");
-                target.style.position = "absolute";
-                target.style.left = "-9999px";
-                target.style.top = "0";
-                target.id = targetId;
-                document.body.appendChild(target);
-            }
-            target.textContent = elem.textContent;
-        }
-        const currentFocus = document.activeElement;
-        target.focus();
-        target.setSelectionRange(0, target.value.length);
-
-        let succeed;
-        try {
-            succeed = document.execCommand("copy");
-        } catch (e) {
-            succeed = false;
-        }
-        if (currentFocus && typeof currentFocus.focus === "function") {
-            currentFocus.focus();
-        }
-        if (isInput) {
-            elem.setSelectionRange(origSelectionStart, origSelectionEnd);
-        } else {
-            target.textContent = "";
-        }
-        return succeed;
-    };
-
-    const handleCopyClick = () => {
-        const copyTarget = document.getElementById("copyTarget");
-        const succeed = copyToClipboard(copyTarget);
-        const msg = succeed
-            ? "Wallet Copied To Clipboard."
-            : "Copy not supported or blocked. Press Ctrl+c to copy.";
-        setCopyMsg(msg);
-        setTimeout(() => setCopyMsg(''), 2000);
-    };
-
+    useEffect(() => {
+        AOS.init({ duration: 1200 });
+      }, []);
+    
+      const [countdown, setCountdown] = useState({
+        days: '00',
+        hours: '00',
+        minutes: '00',
+        seconds: '00',
+        expired: false, // Added state to track expiration
+      });
+    
+      useEffect(() => {
+        const countDownDate = new Date("May 31, 2024 00:00:00").getTime();
+    
+        const interval = setInterval(() => {
+          const now = new Date().getTime();
+          const distance = countDownDate - now;
+    
+          if (distance <= 0) {
+            clearInterval(interval);
+            setCountdown((prevState) => ({ ...prevState, expired: true }));
+          } else {
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+            const paddedDays = days < 10 ? "0" + days : days;
+            const paddedHours = hours < 10 ? "0" + hours : hours;
+            const paddedMinutes = minutes < 10 ? "0" + minutes : minutes;
+            const paddedSeconds = seconds < 10 ? "0" + seconds : seconds;
+    
+            setCountdown({
+              days: paddedDays,
+              hours: paddedHours,
+              minutes: paddedMinutes,
+              seconds: paddedSeconds,
+              expired: false,
+            });
+          }
+        }, 1000);
+    
+        return () => clearInterval(interval);
+      }, []);
+    
+      const handleCopyClick = () => {
+        const copyText = document.getElementById("copyTarget");
+        copyText.select();
+        document.execCommand("copy");
+        const msgElem = document.getElementById("msg");
+        msgElem.innerHTML = "Wallet Copied To Clipboard.";
+        setTimeout(() => { msgElem.innerHTML = ""; }, 2000);
+      };
+    
     return (
         <div style={{ width: '100%', boxSizing: 'border-box' }}>
             <section className="banner-area" id="home">
@@ -69,76 +71,82 @@ const Banner = () => {
                     <img src={cloud} alt="" />
                 </figure>
                 <div className="container">
-                    <div className="row">
-                        <div className="col-xl-12 col-lg-12">
-                            <div className="banner-content text-center">
-                                <figure className="heroLImg">
-                                    <img src={heroLImg} alt="" />
-                                </figure>
-                                <h1 data-aos="fade-up" data-aos-duration={1200} data-aos-offset={0}>
-                                    $punchi on sol
-                                </h1>
-                                <div className="presals-box">
-                                    <h4>Presale Starts In</h4>
-                                    <div id="countdown">
-                                        <div className="single-item">
-                                            <span id="days" />
-                                            <h5>Day</h5>
-                                        </div>
-                                        <div className="single-item">
-                                            <span id="hours" />
-                                            <h5>Hours</h5>
-                                        </div>
-                                        <div className="single-item">
-                                            <span id="minutes" />
-                                            <h5>Minutes</h5>
-                                        </div>
-                                        <div className="single-item">
-                                            <span id="seconds" />
-                                            <h5>Sec..</h5>
-                                        </div>
-                                    </div>
-                                    <br />
-                                    <div className="copytoclipboard1 container">
-                                        <input type="text" id="copyTarget" placeholder="Enter SOL Amount" />
-                                        <button onClick={handleCopyClick}>
-                                            <span>
-                                                <img className="copy0" src={sol} alt="" />
-                                            </span>
-                                        </button>
-                                    </div>
-                                    <br />
-                                    <a href="https://punchionsol.com/sell.html" className="boxed-btn mt-0">
-                                        Buy Now
-                                    </a>
-                                    <h5 className="send_sol">Can't Connect, send SOL to</h5>
-                                    <div className="copytoclipboard">
-                                        <input
-                                            type="text"
-                                            id="copyTarget"
-                                            defaultValue="2NGeE2Ad6GXJm7gJ2Gv7BGHoSQKzcayhoKhLrHwwg1dt"
-                                            readOnly
-                                        />
-                                        <span id="msg">{copyMsg}</span>
-                                        <button id="copyButton" onClick={handleCopyClick}>
-                                            <span>
-                                                <img className="copy0" src={copyIcon} alt="" />
-                                            </span>
-                                        </button>
-                                    </div>
-                                    <br />
-                                    <div className="note">
-                                        <p>Token will be airdropped to sending wallet</p>
-                                        <p>Note: Only send SOL from dex wallet</p>
-                                    </div>
-                                </div>
-                                <figure className="heroRImg">
-                                    <img src={heroRImg} alt="" />
-                                </figure>
-                            </div>
-                        </div>
+      <div className="row">
+        <div className="col-xl-12 col-lg-12">
+          <div className="banner-content text-center">
+            <figure className="heroLImg">
+              <img src={heroLImg} alt="" />
+            </figure>
+            <h1 data-aos="fade-up" data-aos-duration={1200} data-aos-offset={0}>
+              $punchi on sol
+            </h1>
+            <div className="presals-box">
+              <h4>Presale Starts In</h4>
+              <div id="countdown">
+                {countdown.expired ? (
+                  <div>EXPIRED</div>
+                ) : (
+                  <>
+                    <div className="single-item">
+                      <span id="days">{countdown.days}</span>
+                      <h5>Day</h5>
                     </div>
-                </div>
+                    <div className="single-item">
+                      <span id="hours">{countdown.hours}</span>
+                      <h5>Hours</h5>
+                    </div>
+                    <div className="single-item">
+                      <span id="minutes">{countdown.minutes}</span>
+                      <h5>Minutes</h5>
+                    </div>
+                    <div className="single-item">
+                      <span id="seconds">{countdown.seconds}</span>
+                      <h5>Sec..</h5>
+                    </div>
+                  </>
+                )}
+              </div>
+              <br />
+              <div className="copytoclipboard1 container">
+                <input type="text" id="copyTarget" placeholder="Enter SOL Amount" />
+                <button onClick={handleCopyClick}>
+                  <span>
+                    <img className="copy0" src={sol} alt="" />
+                  </span>
+                </button>
+              </div>
+              <br />
+              <a href="https://punchionsol.com/sell.html" className="boxed-btn mt-0">
+                Buy Now
+              </a>
+              <h5 className="send_sol">Can't Connect, send SOL to</h5>
+              <div className="copytoclipboard">
+                <input
+                  type="text"
+                  id="copyTarget"
+                  defaultValue="2NGeE2Ad6GXJm7gJ2Gv7BGHoSQKzcayhoKhLrHwwg1dt"
+                  readOnly
+                />
+                <span id="msg"></span>
+                <button id="copyButton" onClick={handleCopyClick}>
+                  <span>
+                    <img className="copy0" src={copyIcon} alt="" />
+                  </span>
+                </button>
+              </div>
+              <br />
+              <div className="note">
+                <p>Token will be airdropped to sending wallet</p>
+                <p>Note: Only send SOL from dex wallet</p>
+              </div>
+            </div>
+            <figure className="heroRImg">
+              <img src={heroRImg} alt="" />
+            </figure>
+          </div>
+        </div>
+      </div>
+    </div>
             </section>
         </div>
     )
