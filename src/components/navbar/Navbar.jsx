@@ -3,18 +3,23 @@ import React,{useState} from 'react'
 //asset
 import logo from '/src/assets/img/Logo.png'
 import twitter from '/src/assets/img/twitter.png'
-import tlegram from '/src/assets/img/tlegram.png'
-//func
-import { scrollToSection } from '../../../utails/functionsModels'
+import telegram from '/src/assets/img/tlegram.png'
 
+import { scrollToSection } from '../../../utails/functionsModels'
 
 const Navbar = () => {
     const [active, setActive] = useState('home');
+    const [collapseOpen, setCollapseOpen] = useState(false);
 
     const handleSetActive = (id) => {
-      setActive(id);
-      scrollToSection(id);
+        setActive(id);
+        scrollToSection(id);
     };
+
+    const toggleCollapse = () => {
+        setCollapseOpen(!collapseOpen);
+    };
+
     return (
         <header className="header-area" id="header">
             <nav id="navbar_top" className="navbar navbar-expand-lg navbar-light">
@@ -28,26 +33,23 @@ const Navbar = () => {
                                 <img src={twitter} alt="" />
                             </a>
                             <a href="https://t.me/PunchiTalk" target="_blank">
-                                <img src={tlegram} alt="" />
+                                <img src={telegram} alt="" />
                             </a>
                         </div>
                     </div>
                     <button
-                        className="navbar-toggler"
+                        className={`navbar-toggler ${collapseOpen ? 'collapsed' : ''}`}
                         type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#navbarText"
-                        aria-controls="navbarText"
-                        aria-expanded="false"
+                        onClick={toggleCollapse}
                         aria-label="Toggle navigation"
                     >
                         <span className="navbar-toggler-icon" />
                     </button>
-                    <div className="collapse navbar-collapse" id="navbarText">
+                    <div className={`collapse navbar-collapse ${collapseOpen ? 'show' : ''}`} id="navbarText">
                         <ul className="navbar-nav main-menu ms-auto mb-2 mb-lg-0 align-items-center">
-                            <li  className={`nav-item ${active === 'home' ? 'active' : ''}`}>
+                            <li className={`nav-item ${active === 'home' ? 'active' : ''}`}>
                                 <a onClick={() => handleSetActive('home')} className="nav-link">
-                                    home
+                                    Home
                                 </a>
                             </li>
                             <li className={`nav-item ${active === 'about' ? 'active' : ''}`}>
@@ -62,20 +64,17 @@ const Navbar = () => {
                             </li>
                             <li className={`nav-item ${active === 'tokenomics' ? 'active' : ''}`}>
                                 <a onClick={() => handleSetActive('tokenomics')} className="nav-link">
-                                    punchinomics
+                                    Punchinomics
                                 </a>
                             </li>
                             <li className={`nav-item ${active === 'faq' ? 'active' : ''}`}>
                                 <a onClick={() => handleSetActive('faq')} className="nav-link">
-                                    Faq
+                                    FAQ
                                 </a>
                             </li>
                         </ul>
                         <div className="header-right">
-                            <a
-                                href="https://punchionsol.com/sell.html"
-                                className="boxed-btn mt-0"
-                            >
+                            <a href="https://punchionsol.com/sell.html" className="boxed-btn mt-0">
                                 Connect Wallet
                             </a>
                         </div>
@@ -83,8 +82,7 @@ const Navbar = () => {
                 </div>
             </nav>
         </header>
+    );
+};
 
-    )
-}
-
-export default Navbar
+export default Navbar;

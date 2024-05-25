@@ -22,7 +22,7 @@ const Banner = () => {
       });
     
       useEffect(() => {
-        const countDownDate = new Date("May 31, 2024 00:00:00").getTime();
+        const countDownDate = new Date("May 30, 2024 00:00:00").getTime();
     
         const interval = setInterval(() => {
           const now = new Date().getTime();

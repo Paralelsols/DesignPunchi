@@ -24,34 +24,34 @@
 })();
 
 
-const countDownDate = new Date("May 31, 2024 00:00:00").getTime();
+// const countDownDate = new Date("May 31, 2024 00:00:00").getTime();
 
-const x = setInterval(function() {
-  const now = new Date().getTime();
+// const x = setInterval(function() {
+//   const now = new Date().getTime();
 
-  const distance = countDownDate - now;
+//   const distance = countDownDate - now;
 
-  const Days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  const Hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const Mins = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  const Sec = Math.floor((distance % (1000 * 60)) / 1000);
+//   const Days = Math.floor(distance / (1000 * 60 * 60 * 24));
+//   const Hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+//   const Mins = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+//   const Sec = Math.floor((distance % (1000 * 60)) / 1000);
 
-  // Add leading zero if needed
-  const paddedDays = Days < 10 ? "0" + Days : Days;
-  const paddedHours = Hours < 10 ? "0" + Hours : Hours;
-  const paddedMins = Mins < 10 ? "0" + Mins : Mins;
-  const paddedSec = Sec < 10 ? "0" + Sec : Sec;
+//   // Add leading zero if needed
+//   const paddedDays = Days < 10 ? "0" + Days : Days;
+//   const paddedHours = Hours < 10 ? "0" + Hours : Hours;
+//   const paddedMins = Mins < 10 ? "0" + Mins : Mins;
+//   const paddedSec = Sec < 10 ? "0" + Sec : Sec;
 
-  document.getElementById("days").innerHTML = paddedDays + " ";
-  document.getElementById("hours").innerHTML = paddedHours + " ";
-  document.getElementById("minutes").innerHTML = paddedMins + " ";
-  document.getElementById("seconds").innerHTML = paddedSec + " ";
+//   document.getElementById("days").innerHTML = paddedDays + " ";
+//   document.getElementById("hours").innerHTML = paddedHours + " ";
+//   document.getElementById("minutes").innerHTML = paddedMins + " ";
+//   document.getElementById("seconds").innerHTML = paddedSec + " ";
 
-  if (distance < 0) {
-    clearInterval(x);
-    document.getElementById("countdown").innerHTML = "EXPIRED";
-  }
-}, 0); // Update every 1000 milliseconds (1 second)
+//   if (distance < 0) {
+//     clearInterval(x);
+//     document.getElementById("countdown").innerHTML = "EXPIRED";
+//   }
+// }, 0); // Update every 1000 milliseconds (1 second)
 
 
 
