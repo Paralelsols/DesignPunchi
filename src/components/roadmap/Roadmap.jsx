@@ -1,8 +1,8 @@
 import React from 'react'
 
-import roadmapTopShap from '/src/assets/img/roadmapTopShap.png'
-import rocket from '/src/assets/img/rocket.png'
-import roadmapBottomIcon from '/src/assets/img/roadmapBottomIcon.png'
+import roadmapTopShap from '../../assets/img/roadmapTopShap.png'
+import rocket from '../../assets/img/rocket.png'
+import roadmapBottomIcon from '../../assets/img/roadmapBottomIcon.png'
 
 const Roadmap = () => {
     return (

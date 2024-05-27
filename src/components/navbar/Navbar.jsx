@@ -1,12 +1,12 @@
 import React,{useState} from 'react'
-
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 //asset
-import logo from '/src/assets/img/Logo.png'
-import twitter from '/src/assets/img/twitter.png'
-import telegram from '/src/assets/img/tlegram.png'
+import logo from '../../assets/img/Logo.png'
+import twitter from '../../assets/img/twitter.png'
+import telegram from '../../assets/img/tlegram.png'
 
-import { scrollToSection } from '../../../utails/functionsModels'
-
+import { scrollToSection } from '../../utails/functionsModels'
+// import CustomWalletButton from '../CustomWalletButton';
 const Navbar = () => {
     const [active, setActive] = useState('home');
     const [collapseOpen, setCollapseOpen] = useState(false);
@@ -73,11 +73,12 @@ const Navbar = () => {
                                 </a>
                             </li>
                         </ul>
-                        <div className="header-right">
-                            <a href="https://punchionsol.com/sell.html" className="boxed-btn mt-0">
+                        {/* <div className="header-right"> */}
+                            {/* <a href="https://punchionsol.com/sell.html" className="boxed-btn mt-0">
                                 Connect Wallet
-                            </a>
-                        </div>
+                            </a> */}
+                        {/* </div> */}
+                             <WalletMultiButton style={{backgroundColor:'#f6bc00'}}/>
                     </div>
                 </div>
             </nav>

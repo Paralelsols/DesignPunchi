@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
-import cloud from '/src/assets/img/cloud.png'
-import heroLImg from '/src/assets/img/sol.png'
-import sol from '/src/assets/img/sol.png'
-import copyIcon from '/src/assets/img/copyIcon.svg'
-import heroRImg from '/src/assets/img/heroRImg.png'
+import cloud from '../../assets/img/cloud.png'
+import heroLImg from '../../assets/img/sol.png'
+import sol from '../../assets/img/sol.png'
+import copyIcon from '../../assets/img/copyIcon.svg'
+import heroRImg from '../../assets/img/heroRImg.png'
 
 const Banner = () => {
     useEffect(() => {

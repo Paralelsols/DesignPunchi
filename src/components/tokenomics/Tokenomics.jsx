@@ -1,7 +1,7 @@
 import React from 'react'
 
-import Chart from '/src/assets/img/Chart.png'
-import token_bShap from '/src/assets/img/token-bShap.png'
+import Chart from '../../assets/img/Chart.png'
+import token_bShap from '../../assets/img/token-bShap.png'
 
 const Tokenomics = () => {
     return (

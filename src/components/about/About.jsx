@@ -1,8 +1,8 @@
 import React from 'react'
 
-import about_icon1 from '/src/assets/img/about-icon1.png'
-import about_icon2 from '/src/assets/img/about-icon2.png'
-import about_bg from '/src/assets/img/about-bg.png'
+import about_icon1 from '../../assets/img/about-icon1.png'
+import about_icon2 from '../../assets/img/about-icon2.png'
+import about_bg from '../../assets/img/about-bg.png'
 
 const About = () => {
     return (
