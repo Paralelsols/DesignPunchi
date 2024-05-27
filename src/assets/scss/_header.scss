@@ -1,7 +1,7 @@
 // header
 .header-area {
     position: absolute;
-    top: 36px;
+    top: 0px;
     left: 0;
     width: 100%;
     z-index: 9999;
@@ -78,6 +78,7 @@
                 font-weight: 500;
                 line-height: 110%; /* 19.8px */
                 text-transform: capitalize;
+                cursor: pointer;
                 @include transition;
                 --bs-navbar-nav-link-padding-x: 12px;
                 @include xl{
@@ -103,6 +104,9 @@
                 display: inline-block;
                 position: relative;
                 z-index: 1;
+             }
+             a.active{
+                color: $white;
              }
              
         }
@@ -156,19 +160,13 @@
             opacity: .7;
            }
        }
-    }
+       }
 }
 .header-area .main-menu li.active a, .header-area .main-menu li:hover a{
     color: $primary;
 }
-.fixed-top {
-    position: fixed;
-    width: 100%;
-    left: 0;
-    top: 0px;
-    @include mmd{
-        top: 0;
-    }
+header.header-area.position-fixed {
+    top: 0px !important;
 }
 .header-area #navbar_top {
     padding: 0;
