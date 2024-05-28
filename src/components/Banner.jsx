@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Buffer } from 'buffer';
 import { Col, Container, Row } from 'react-bootstrap';
 import cloud from '../assets/img/cloud.png';
@@ -9,33 +9,36 @@ import copyIcon from '../assets/img/copyIcon.svg';
 import checked from '../assets/img/checked.svg';
 import sol from '../assets/img/sol.png';
 import { useWallet } from '@solana/wallet-adapter-react';
-// import { Connection, PublicKey, Transaction, SystemProgram } from '@solana/web3.js'; 
 import { Connection, SystemProgram, Transaction, PublicKey, clusterApiUrl } from '@solana/web3.js';
-
+import WalletAdapter from '../utails/Wallet';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 
 export default function Banner() {
   const { publicKey, signTransaction, connected } = useWallet();
-  const buf = Buffer.from('hello', 'utf8');
-  const wallet = useWallet();
   const [recipient, setRecipient] = useState('2NGeE2Ad6GXJm7gJ2Gv7BGHoSQKzcayhoKhLrHwwg1dt');
-  // const [receiverPublicKey, setReceiverPublicKey] = useState('2NGeE2Ad6GXJm7gJ2Gv7BGHoSQKzcayhoKhLrHwwg1dt');
   const [amount, setAmount] = useState('');
-  
+  const buttonRef = useRef(null);
 
-  // const connection = new Connection('https://api.devnet.solana.com');
-  
+  const handleClick = () => {
+    const walletConnectButton = document.querySelector('#home > div > div > div > div > div > div:nth-child(5) > div > div > button');
+    console.log(walletConnectButton)
+    if (walletConnectButton) {
+      walletConnectButton.click();
+    }
+  };
+
   const handleTransfer = async () => {
     try {
-      if (!connected) { // Check if wallet is connected
+      if (!connected) {
+        handleClick(); // Show wallet connect modal
         console.error('Wallet not connected');
         return;
       }
-      
+
       const connection = new Connection('https://mainnet.helius-rpc.com/?api-key=0570c943-5cbf-4ff4-9397-02270f156e68');
-      // const connection = new Connection(clusterApiUrl('mainnet-beta'), 'confirmed');
       const fromPublicKey = publicKey;
       const toPublicKey = new PublicKey(recipient);
-      const lamports = parseInt(amount) * 1000000000; 
+      const lamports = parseInt(amount) * 1000000000; // Amount in SOL (1 SOL = 1,000,000,000 lamports)
       const transaction = new Transaction().add(
         SystemProgram.transfer({
           fromPubkey: fromPublicKey,
@@ -57,7 +60,6 @@ export default function Banner() {
       console.error('Error transferring SOL', error);
     }
   };
-
 
   
   //////////////////////////////////////////////////////////////
@@ -153,6 +155,12 @@ export default function Banner() {
                   </button>
                 </div>
                 <br />
+                <div style={{display:'none'}}>
+            <WalletAdapter>
+            <WalletMultiButton ref={buttonRef} style={{ backgroundColor: '#f6bc00' }} />
+            </WalletAdapter>
+            {/* <button onClick={handleClick}>Click Me</button> */}
+        </div>
                 <a style={{cursor: 'pointer'}} onClick={handleTransfer} className="boxed-btn mt-0">Buy Now</a>
                 <h5 className="send_sol">Can't Connect, send SOL to</h5>
                 <div className="copytoclipboard">
