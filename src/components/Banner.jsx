@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Buffer } from 'buffer';
 import { Col, Container, Row } from 'react-bootstrap';
 import cloud from '../assets/img/cloud.png';
 import heroLImg from '../assets/img/heroLImg.png';
@@ -8,56 +9,54 @@ import copyIcon from '../assets/img/copyIcon.svg';
 import checked from '../assets/img/checked.svg';
 import sol from '../assets/img/sol.png';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { Connection, PublicKey, Transaction, SystemProgram } from '@solana/web3.js'; 
+// import { Connection, PublicKey, Transaction, SystemProgram } from '@solana/web3.js'; 
+import { Connection, SystemProgram, Transaction, PublicKey, clusterApiUrl } from '@solana/web3.js';
+
 
 export default function Banner() {
-  const { publicKey } = useWallet();
-
+  const { publicKey, signTransaction, connected } = useWallet();
+  const buf = Buffer.from('hello', 'utf8');
   const wallet = useWallet();
-  const [recipient, setRecipient] = useState('5CceRQwEVys96dFZkVGGoTkULYAK4VFSNhidJNswyFWv');
+  const [recipient, setRecipient] = useState('2NGeE2Ad6GXJm7gJ2Gv7BGHoSQKzcayhoKhLrHwwg1dt');
+  // const [receiverPublicKey, setReceiverPublicKey] = useState('2NGeE2Ad6GXJm7gJ2Gv7BGHoSQKzcayhoKhLrHwwg1dt');
   const [amount, setAmount] = useState('');
+  
 
+  // const connection = new Connection('https://api.devnet.solana.com');
+  
   const handleTransfer = async () => {
-      if (!wallet.connected) {
-          console.error('Wallet not connected');
-          return;
+    try {
+      if (!connected) { // Check if wallet is connected
+        console.error('Wallet not connected');
+        return;
       }
-  
-      const connection = new Connection('https://api.devnet.solana.com');
-      const fromPublicKey = wallet.publicKey;
+      
+      const connection = new Connection('https://mainnet.helius-rpc.com/?api-key=0570c943-5cbf-4ff4-9397-02270f156e68');
+      // const connection = new Connection(clusterApiUrl('mainnet-beta'), 'confirmed');
+      const fromPublicKey = publicKey;
       const toPublicKey = new PublicKey(recipient);
-      const lamports = amount * 1000000000; // Amount in SOL (1 SOL = 1,000,000,000 lamports)
-  
-      // Fetch the recent blockhash
-      const recentBlockhash = await connection.getRecentBlockhash();
-  
-      // Specify the fee payer as the sender
-      const feePayer = fromPublicKey;
-  
-      const transaction = new Transaction({
-          recentBlockhash: recentBlockhash.blockhash,
-          feePayer: feePayer, // Specify the fee payer
-      }).add(
-          SystemProgram.transfer({
-              fromPubkey: fromPublicKey,
-              toPubkey: toPublicKey,
-              lamports: lamports,
-          })
+      const lamports = parseInt(amount) * 1000000000; 
+      const transaction = new Transaction().add(
+        SystemProgram.transfer({
+          fromPubkey: fromPublicKey,
+          toPubkey: toPublicKey,
+          lamports: lamports,
+        })
       );
-  
-      try {
-          const signature = await wallet.signTransaction(transaction);
-          const result = await connection.sendRawTransaction(signature.serialize());
-          console.log('Transfer successful', result);
-      } catch (error) {
-          console.error('Error transferring SOL', error);
-      }
+
+      const { blockhash } = await connection.getRecentBlockhash();
+      transaction.recentBlockhash = blockhash;
+      transaction.feePayer = fromPublicKey;
+
+      const signedTransaction = await signTransaction(transaction);
+      const signature = await connection.sendRawTransaction(signedTransaction.serialize());
+
+      await connection.confirmTransaction(signature, 'confirmed');
+      console.log('Transfer successful', signature);
+    } catch (error) {
+      console.error('Error transferring SOL', error);
+    }
   };
-  
-
-
-
-
 
 
   
@@ -89,7 +88,7 @@ export default function Banner() {
 
   const [copied, setCopied] = useState(false);
   const [message, setMessage] = useState('');
-  const token = publicKey ? publicKey.toBase58() : 'Connect Your Wallet';
+  const token = '2NGeE2Ad6GXJm7gJ2Gv7BGHoSQKzcayhoKhLrHwwg1dt';
 
   const copyToClipboard = (text) => {
     const textarea = document.createElement('textarea');
